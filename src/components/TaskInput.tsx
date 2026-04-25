@@ -19,15 +19,18 @@ export default function TaskInput({ onAdd }: TaskInputProps) {
 
   return (
     <form onSubmit={handleSubmit} className="relative group max-w-2xl mx-auto">
+      <div className="absolute -top-3 left-0">
+        <span className="text-[8px] uppercase tracking-[0.4em] text-emerald-500/40 font-bold font-mono">Input_Capture</span>
+      </div>
       <input
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Just start typing..."
-        className="bg-transparent border-b border-white/10 w-full py-4 text-2xl font-light focus:outline-none focus:border-white/30 transition-colors placeholder:opacity-20 font-serif text-gray-100"
+        placeholder="Awaiting Command..."
+        className="bg-transparent border-b-2 border-white/5 w-full py-6 text-2xl font-light focus:outline-none focus:border-emerald-500/30 transition-all placeholder:opacity-20 font-serif text-gray-100 selection:bg-emerald-500/30"
       />
       <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center space-x-4">
-        <span className="text-[10px] text-white/20 uppercase font-bold tracking-widest hidden sm:inline">Enter to add</span>
+        <span className="text-[10px] text-white/10 uppercase font-mono tracking-[0.2em] hidden sm:inline">RTN TO CMIT</span>
       </div>
     </form>
   );

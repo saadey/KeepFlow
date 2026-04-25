@@ -3,10 +3,12 @@
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #10b981; /* Sea Green / Emerald 500 */
+  --color-primary-glow: rgba(16, 185, 129, 0.4);
 }
 
 @layer base {
   body {
-    @apply text-gray-900 antialiased;
+    @apply bg-[#0A0A0A] text-gray-200 antialiased;
   }
 }

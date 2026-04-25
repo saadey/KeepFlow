@@ -13,6 +13,7 @@ export interface Task {
   userId: string;
   createdAt: number;
   updatedAt: number;
+  completedAt?: number;
 }
 
 export enum OperationType {
