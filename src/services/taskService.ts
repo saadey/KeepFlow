@@ -9,7 +9,7 @@ import {
   deleteDoc, 
   doc
 } from 'firebase/firestore';
-import { getDb, auth } from '../lib/firebase';
+import { db, auth } from '../lib/firebase';
 import { Task, Priority, OperationType, FirestoreErrorInfo } from '../types';
 
 function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
@@ -38,10 +38,7 @@ export const taskService = {
     let unsubscribe: () => void = () => {};
     let isCancelled = false;
 
-    const startSubscription = async () => {
-      const db = await getDb();
-      if (isCancelled) return;
-
+    const startSubscription = () => {
       if (!db) {
         const syncLocal = () => {
           const localTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
@@ -91,8 +88,6 @@ export const taskService = {
       updatedAt: Date.now()
     };
 
-    const db = await getDb();
-
     if (!db) {
       const localTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
       const taskWithId = { ...newTask, id: Math.random().toString(36).substr(2, 9) };
@@ -114,8 +109,6 @@ export const taskService = {
       updatedAt: Date.now()
     };
 
-    const db = await getDb();
-
     if (!db) {
       const localTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
       const newTasks = localTasks.map((t: any) => t.id === taskId ? { ...t, ...finalUpdates } : t);
@@ -133,8 +126,6 @@ export const taskService = {
   },
 
   deleteTask: async (taskId: string) => {
-    const db = await getDb();
-
     if (!db) {
       const localTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
       const newTasks = localTasks.filter((t: any) => t.id !== taskId);

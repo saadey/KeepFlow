@@ -75,7 +75,20 @@ export default function App() {
           {!user ? (
             <button onClick={login} className="text-[10px] uppercase tracking-widest text-[#555] hover:text-white transition-colors">Sign In</button>
           ) : (
-            <button onClick={logout} className="text-[10px] uppercase tracking-widest text-[#555] hover:text-white transition-colors">Sign Out</button>
+            <div className="flex items-center gap-3">
+              <div className="flex flex-col items-end hidden sm:flex">
+                <span className="text-[10px] uppercase tracking-widest text-white/60 font-bold">{user.displayName}</span>
+                <button onClick={logout} className="text-[9px] uppercase tracking-widest text-[#555] hover:text-red-500 transition-colors">Sign Out</button>
+              </div>
+              {user.photoURL ? (
+                <img src={user.photoURL} alt={user.displayName || 'User'} className="w-8 h-8 rounded-full border border-white/10" referrerPolicy="no-referrer" />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] text-white/40">
+                  {user.displayName?.charAt(0) || 'U'}
+                </div>
+              )}
+              <button onClick={logout} className="sm:hidden text-[10px] uppercase tracking-widest text-[#555] hover:text-white transition-colors">Sign Out</button>
+            </div>
           )}
         </div>
       </header>

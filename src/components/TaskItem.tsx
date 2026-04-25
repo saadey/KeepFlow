@@ -53,15 +53,15 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
 
   return (
     <div className="relative mb-4 group overflow-hidden rounded-lg bg-[#111] border border-white/5 h-auto transition-all">
-      {/* Background Actions - Only visible during drag */}
-      <div className="absolute inset-x-0 inset-y-0 flex items-center justify-between px-6 rounded-lg pointer-events-none">
-        <div className="flex items-center text-gray-400 font-bold text-[10px] tracking-widest uppercase italic">
+      {/* Background Actions - Fixed to top to avoid overlapping notes when expanded */}
+      <div className="absolute top-0 left-0 right-0 h-[68px] flex items-center justify-between px-6 pointer-events-none">
+        <div className="flex items-center text-white/40 font-bold text-[10px] tracking-widest uppercase italic">
           <Check size={18} className="mr-2" />
-          {task.isDeleted ? 'Recover' : (task.isCompleted ? 'Rollback' : 'Achieved')}
+          {task.isDeleted ? 'RECOVER' : (task.isCompleted ? 'RESTORE' : 'DONE')}
         </div>
         <div className="flex items-center text-red-500 font-bold text-[10px] tracking-widest uppercase italic">
           <Trash2 size={18} className="mr-2" />
-          {task.isDeleted ? 'Obliterate' : 'Bin'}
+          {task.isDeleted ? 'DELETE FOR GOOD' : 'TO BIN'}
         </div>
       </div>
 

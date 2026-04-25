@@ -39,12 +39,13 @@ const blueprint: FirebaseBlueprintConfig = {
         title: { type: "string", description: "Task summary" },
         description: { type: "string", description: "Full task details (hidden by default)" },
         isCompleted: { type: "boolean", description: "Completion status" },
+        isDeleted: { type: "boolean", description: "Soft delete status" },
         priority: { type: "string", enum: Object.values(Priority), description: "Priority level" },
         userId: { type: "string", description: "The owner of the task" },
         createdAt: { type: "number", description: "Creation timestamp" },
         updatedAt: { type: "number", description: "Last update timestamp" }
       },
-      required: ["title", "isCompleted", "priority", "userId", "createdAt", "updatedAt"]
+      required: ["title", "isCompleted", "isDeleted", "priority", "userId", "createdAt", "updatedAt"]
     }
   },
   firestore: {
