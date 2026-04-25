@@ -53,13 +53,13 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
 
   return (
     <div className="relative mb-4 group overflow-hidden rounded-lg bg-[#111] border border-white/5 h-auto transition-all">
-      {/* Background Actions - Fixed to top to avoid overlapping notes when expanded */}
-      <div className="absolute top-0 left-0 right-0 h-[68px] flex items-center justify-between px-6 pointer-events-none">
-        <div className="flex items-center text-white/40 font-bold text-[10px] tracking-widest uppercase italic">
+      {/* Background Actions - Fixed height and locked behind header */}
+      <div className="absolute top-0 left-0 right-0 h-[68px] flex items-center justify-between px-6 pointer-events-none opacity-40">
+        <div className="flex items-center text-white font-bold text-[10px] tracking-widest uppercase italic">
           <Check size={18} className="mr-2" />
           {task.isDeleted ? 'RECOVER' : (task.isCompleted ? 'RESTORE' : 'DONE')}
         </div>
-        <div className="flex items-center text-red-500 font-bold text-[10px] tracking-widest uppercase italic">
+        <div className="flex items-center text-red-500 font-bold text-[10px] tracking-widest uppercase italic border-red-500/20">
           <Trash2 size={18} className="mr-2" />
           {task.isDeleted ? 'DELETE FOR GOOD' : 'TO BIN'}
         </div>
@@ -73,9 +73,9 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
         onDragEnd={handleDragEnd}
         animate={controls}
         onClick={() => setIsExpanded(!isExpanded)}
-        className={`relative z-10 flex flex-col bg-[#0F0F0F] border border-white/5 rounded-lg transition-all cursor-pointer select-none ${
-          task.priority === Priority.IMPORTANT ? 'bg-red-950/10 border-red-900/20' : ''
-        }`}
+        className={`relative z-10 flex flex-col bg-[#111] border border-white/5 rounded-lg transition-all cursor-pointer select-none ${
+          task.priority === Priority.IMPORTANT ? 'border-l-red-600/50 border-white/10' : ''
+        } ${task.isCompleted ? 'opacity-60' : ''}`}
       >
         <div className="flex items-center">
           <div className={`p-5 border-r border-white/5 flex items-center justify-center ${task.priority === Priority.IMPORTANT ? 'border-red-900/20' : ''}`}>

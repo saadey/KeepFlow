@@ -34,13 +34,13 @@ service cloud.firestore {
       
       allow create: if isSignedIn() 
         && isValidTask(incoming()) 
-        && incoming().createdAt == request.time.toMillis()
-        && incoming().updatedAt == request.time.toMillis();
+        && incoming().createdAt is int
+        && incoming().updatedAt == incoming().createdAt;
 
       allow update: if isOwner(existing().userId)
         && isValidTask(incoming())
         && incoming().createdAt == existing().createdAt
-        && incoming().updatedAt == request.time.toMillis()
+        && incoming().updatedAt >= existing().updatedAt
         && (
           // Action: Mark completed
           (incoming().diff(existing()).affectedKeys().hasOnly(['isCompleted', 'updatedAt'])) ||

@@ -39,7 +39,10 @@ export const taskService = {
     let isCancelled = false;
 
     const startSubscription = () => {
-      if (!db) {
+      // Only use Firestore if we have a DB and a matching authenticated user
+      const useFirestore = !!db && !!auth.currentUser && userId === auth.currentUser.uid;
+
+      if (!useFirestore) {
         const syncLocal = () => {
           const localTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
           const userTasks = localTasks.filter((t: any) => t.userId === userId);
@@ -64,6 +67,8 @@ export const taskService = {
         })) as Task[];
         callback(tasks);
       }, (error) => {
+        // If it's a permission error because they just logged out, ignore it
+        if (error.code === 'permission-denied') return;
         handleFirestoreError(error, OperationType.GET, 'tasks');
       });
     };

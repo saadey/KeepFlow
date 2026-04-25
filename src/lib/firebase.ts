@@ -8,7 +8,7 @@ import firebaseConfig from '../../firebase-applet-config.json';
 export const googleProvider = new GoogleAuthProvider();
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -27,8 +27,9 @@ export function useAuth() {
     if (!auth) return;
     try {
       await signInWithPopup(auth, googleProvider);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed", error);
+      alert("Login failed: " + (error.message || "Unknown error") + ". Ensure popups are allowed and you are signed into Google.");
     }
   };
 
