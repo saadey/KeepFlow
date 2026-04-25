@@ -1,0 +1,6 @@
+{
+  "name": "KeepFlow Tasks",
+  "description": "A minimalist, gesture-driven task list with hidden descriptions and simple priority marking, inspired by Google Keep.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

@@ -1,0 +1,58 @@
+import { Priority } from './types';
+
+export interface EntityDefinition {
+  title: string;
+  description: string;
+  type: "object";
+  properties: {
+    [propertyName: string]: {
+      type: string;
+      format?: string;
+      description?: string;
+      enum?: any[];
+      $ref?: string;
+    };
+  };
+  required?: string[];
+}
+
+export interface FirebaseBlueprintConfig {
+  entities: {
+    [entityName: string]: EntityDefinition;
+  };
+  firestore?: {
+    [collectionPath: string]: {
+      schema: string | { $ref: string };
+      description: string;
+    };
+  };
+}
+
+const blueprint: FirebaseBlueprintConfig = {
+  entities: {
+    task: {
+      title: "Task",
+      description: "A single task in the task list",
+      type: "object",
+      properties: {
+        id: { type: "string", description: "Unique identifier" },
+        title: { type: "string", description: "Task summary" },
+        description: { type: "string", description: "Full task details (hidden by default)" },
+        isCompleted: { type: "boolean", description: "Completion status" },
+        priority: { type: "string", enum: Object.values(Priority), description: "Priority level" },
+        userId: { type: "string", description: "The owner of the task" },
+        createdAt: { type: "number", description: "Creation timestamp" },
+        updatedAt: { type: "number", description: "Last update timestamp" }
+      },
+      required: ["title", "isCompleted", "priority", "userId", "createdAt", "updatedAt"]
+    }
+  },
+  firestore: {
+    "tasks/{taskId}": {
+      schema: "task",
+      description: "User tasks"
+    }
+  }
+};
+
+export default blueprint;
