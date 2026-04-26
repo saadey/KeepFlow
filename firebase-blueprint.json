@@ -43,7 +43,8 @@ const blueprint: FirebaseBlueprintConfig = {
         priority: { type: "string", enum: Object.values(Priority), description: "Priority level" },
         userId: { type: "string", description: "The owner of the task" },
         createdAt: { type: "number", description: "Creation timestamp" },
-        updatedAt: { type: "number", description: "Last update timestamp" }
+        updatedAt: { type: "number", description: "Last update timestamp" },
+        completedAt: { type: "number", description: "Timestamp when the task was finished" }
       },
       required: ["title", "isCompleted", "isDeleted", "priority", "userId", "createdAt", "updatedAt"]
     }

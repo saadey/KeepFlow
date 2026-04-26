@@ -17,7 +17,7 @@ service cloud.firestore {
 
     function isValidTask(data) {
       return data.keys().hasAll(['title', 'description', 'isCompleted', 'isDeleted', 'priority', 'userId', 'createdAt', 'updatedAt'])
-        && data.keys().size() == 8
+        && data.keys().size() >= 8 && data.keys().size() <= 9
         && data.title is string && data.title.size() <= 500
         && data.description is string && data.description.size() <= 2000
         && data.isCompleted is bool
@@ -25,7 +25,8 @@ service cloud.firestore {
         && data.priority in ['none', 'important']
         && data.userId == request.auth.uid
         && data.createdAt is int
-        && data.updatedAt is int;
+        && data.updatedAt is int
+        && (!data.keys().hasAny(['completedAt']) || data.completedAt is int);
     }
 
     match /tasks/{taskId} {
@@ -43,7 +44,9 @@ service cloud.firestore {
         && incoming().updatedAt >= existing().updatedAt
         && (
           // Action: Mark completed
-          (incoming().diff(existing()).affectedKeys().hasOnly(['isCompleted', 'updatedAt'])) ||
+          (incoming().diff(existing()).affectedKeys().hasOnly(['isCompleted', 'completedAt', 'updatedAt'])) ||
+          // Action: Restore
+          (incoming().diff(existing()).affectedKeys().hasOnly(['isCompleted', 'completedAt', 'updatedAt'])) ||
           // Action: Rename or change description
           (incoming().diff(existing()).affectedKeys().hasOnly(['title', 'description', 'updatedAt'])) ||
           // Action: Change priority

@@ -7,6 +7,7 @@ import {
   addDoc, 
   updateDoc, 
   deleteDoc, 
+  deleteField,
   doc
 } from 'firebase/firestore';
 import { db, auth } from '../lib/firebase';
@@ -109,10 +110,14 @@ export const taskService = {
   },
 
   updateTask: async (taskId: string, updates: Partial<Task>) => {
-    const finalUpdates = {
-      ...updates,
+    // Convert undefined values to deleteField() for Firestore compatibility
+    const finalUpdates: any = {
       updatedAt: Date.now()
     };
+
+    Object.entries(updates).forEach(([key, value]) => {
+      finalUpdates[key] = value === undefined ? deleteField() : value;
+    });
 
     if (!db) {
       const localTasks = JSON.parse(localStorage.getItem('tasks') || '[]');

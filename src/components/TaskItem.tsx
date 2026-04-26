@@ -58,7 +58,7 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
   };
 
   return (
-    <div className="relative mb-4 group overflow-hidden rounded-lg bg-[#0D0D0D] border border-white/5 h-auto transition-all">
+    <div className="relative mb-6 group overflow-hidden rounded-xl bg-[#0D0D0D] border border-white/5 h-auto transition-all hover:border-emerald-500/20 hover:shadow-[0_0_30px_rgba(16,185,129,0.05)]">
       {/* Background Actions - Only visible during drag */}
       <motion.div 
         style={{ opacity: 0 }}
@@ -83,9 +83,9 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
         onDragEnd={handleDragEnd}
         animate={controls}
         onClick={() => setIsExpanded(!isExpanded)}
-        className={`relative z-10 flex flex-col bg-[#0D0D0D] border border-white/5 rounded-lg transition-all cursor-pointer select-none ${
-          task.priority === Priority.IMPORTANT ? 'border-l-emerald-600/50' : 'border-l-white/5'
-        } border-l-[3px] ${task.isCompleted ? 'opacity-40 grayscale-[40%]' : ''}`}
+        className={`relative z-10 flex flex-col bg-[#0D0D0D] border border-white/5 rounded-xl transition-all cursor-pointer select-none ${
+          task.priority === Priority.IMPORTANT ? 'border-l-emerald-600/50 shadow-[0_0_25px_rgba(16,185,129,0.08)]' : 'border-l-white/10'
+        } border-l-[3px] ${task.isCompleted ? 'opacity-70 grayscale-[10%]' : 'hover:bg-[#111] hover:border-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.02)]'}`}
       >
         <div className="flex items-center">
           <div className="p-5 border-r border-white/5 flex items-center justify-center">
@@ -104,8 +104,8 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
               }}
               className={`w-6 h-6 border rounded-sm flex items-center justify-center transition-all ${
                 task.isCompleted 
-                  ? 'bg-emerald-600 border-emerald-500 text-white shadow-[0_0_10px_rgba(16,185,129,0.3)]' 
-                  : 'border-white/10 text-transparent hover:border-emerald-500/50'
+                  ? 'bg-emerald-600 border-emerald-500 text-white shadow-[0_0_12px_rgba(16,185,129,0.4)] scale-110' 
+                  : 'border-white/20 text-transparent hover:border-emerald-500/50'
               }`}
             >
               {task.isCompleted && <Check size={14} strokeWidth={3} />}
@@ -113,11 +113,18 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
           </div>
 
           <div className="flex-1 p-5 min-w-0">
-            <span className={`text-lg transition-all block truncate font-sans tracking-tight ${
-              task.isCompleted ? 'text-gray-500 line-through' : 'text-gray-100'
-            } ${task.priority === Priority.IMPORTANT && !task.isCompleted ? 'text-emerald-300 font-medium' : ''}`}>
-              {task.title}
-            </span>
+            <div className="flex flex-col">
+              <span className={`text-lg transition-all block truncate font-sans tracking-tight ${
+                task.isCompleted ? 'text-gray-400 line-through decoration-emerald-500/30' : 'text-gray-100'
+              } ${task.priority === Priority.IMPORTANT && !task.isCompleted ? 'text-emerald-300 font-medium' : ''}`}>
+                {task.title}
+              </span>
+              {task.isCompleted && task.completedAt && (
+                <span className="text-[8px] uppercase tracking-[0.1em] text-emerald-500 font-mono mt-1 font-bold">
+                  EXEC_COMPLETED: {new Date(task.completedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center space-x-2 px-5 opacity-40 group-hover:opacity-100 transition-opacity">
@@ -154,14 +161,14 @@ export default function TaskItem({ task, onUpdate, onDelete }: TaskItemProps) {
                     <Terminal size={12} />
                     <span>Internal_Notes</span>
                   </div>
-                  <textarea
+                    <textarea
                     value={localDesc}
                     onClick={(e) => e.stopPropagation()}
                     onPointerDown={(e) => e.stopPropagation()}
                     onChange={(e) => setLocalDesc(e.target.value)}
                     onBlur={handleDescBlur}
                     placeholder="// Awaiting input details..."
-                    className="w-full bg-transparent text-sm text-gray-400 leading-relaxed font-mono focus:outline-none resize-none min-h-[80px] border-none p-0 selection:bg-emerald-500/20"
+                    className="w-full bg-transparent text-sm text-gray-200 leading-relaxed font-mono focus:outline-none resize-none min-h-[80px] border-none p-0 selection:bg-emerald-500/30 placeholder:opacity-30"
                   />
                 </div>
 

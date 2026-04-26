@@ -127,16 +127,18 @@ export default function App() {
             <div className="flex flex-col space-y-12">
               {/* CURRENT PROCESSES */}
               <section className="flex flex-col space-y-4">
-                <div className="flex items-center justify-between mb-4 px-2">
+                <div className="flex items-center justify-between mb-4 px-4 py-2 bg-white/[0.02] border border-white/5 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <h3 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] font-mono">Active_Processes</h3>
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                    <h3 className="text-[10px] font-bold text-white/40 uppercase tracking-[0.4em] font-mono">Active_Processes</h3>
                     {isSyncing && <Loader2 className="animate-spin text-emerald-500/30" size={12} />}
                   </div>
+                  <span className="text-[9px] font-mono text-white/20 select-none">BUFFER_SIZE: {currentTasks.length}</span>
                 </div>
 
                 {currentTasks.length === 0 ? (
-                  <div className="text-center py-12 opacity-20 italic font-serif text-lg px-12 leading-relaxed">
-                    "All buffers cleared."
+                  <div className="text-center py-20 opacity-20 italic font-serif text-lg px-12 leading-relaxed border border-dashed border-white/5 rounded-xl">
+                    "All buffers cleared. System idle."
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -144,10 +146,10 @@ export default function App() {
                       {currentTasks.map((task) => (
                         <motion.div
                           key={task.id}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, scale: 0.95 }}
-                          transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+                          transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
                           layout
                         >
                           <TaskItem 
@@ -164,19 +166,23 @@ export default function App() {
 
               {/* TERMINATED PROCESSES (Completed) */}
               {completedTasks.length > 0 && (
-                <section className="flex flex-col space-y-4 pt-12 border-t border-white/5">
-                  <div className="flex items-center justify-between mb-4 px-2">
+                <section className="flex flex-col space-y-4 pt-12">
+                  <div className="flex items-center justify-between mb-4 px-4 py-2 bg-white/[0.01] border border-white/5 rounded-lg">
                     <div className="flex items-center gap-3">
-                      <h3 className="text-[10px] font-bold text-white/10 uppercase tracking-[0.4em] font-mono">Terminated_Processes</h3>
+                      <div className="w-1.5 h-1.5 rounded-full bg-white/10" />
+                      <h3 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em] font-mono">Terminated_Processes</h3>
                     </div>
-                    <button 
-                      onClick={() => {
-                        completedTasks.forEach(t => updateTask(t.id, { isDeleted: true }));
-                      }}
-                      className="text-[9px] uppercase tracking-[0.2em] text-white/10 hover:text-emerald-500 transition-colors bg-white/5 px-3 py-1 rounded-sm border border-white/5"
-                    >
-                      Archive_All
-                    </button>
+                    <div className="flex items-center gap-4">
+                      <span className="text-[9px] font-mono text-white/10 select-none">STACK_COUNT: {completedTasks.length}</span>
+                      <button 
+                        onClick={() => {
+                          completedTasks.forEach(t => updateTask(t.id, { isDeleted: true }));
+                        }}
+                        className="text-[9px] uppercase tracking-[0.2em] text-white/20 hover:text-emerald-500 transition-colors bg-white/5 px-3 py-1 rounded border border-white/5"
+                      >
+                        Purge_All
+                      </button>
+                    </div>
                   </div>
 
                   <div className="space-y-4">
@@ -251,9 +257,21 @@ export default function App() {
         )}
       </main>
 
-      <footer className="p-8 flex justify-center mt-auto border-t border-white/5 bg-[#050505]">
+      <footer className="p-12 flex flex-col items-center mt-auto border-t border-white/5 bg-[#050505] space-y-4">
         <div className="text-[10px] text-white/10 uppercase tracking-[0.5em] font-medium text-center font-mono">
-          {user ? `SECURE_SESSION: ${user.email?.toUpperCase()}` : 'LOCAL_SAFE_ACTIVE'} • KeepFlow v1.0.6
+          {user ? `SECURE_SESSION: ${user.email?.toUpperCase()}` : 'LOCAL_SAFE_ACTIVE'} • KeepFlow v1.0.7
+        </div>
+        <div className="text-[9px] text-white/20 uppercase tracking-[0.2em] font-mono text-center flex items-center gap-2">
+          <span>© {new Date().getFullYear()} All Rights Reserved • Developed by</span>
+          <a 
+            href="https://www.linkedin.com/in/saud103/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center gap-1.5 px-3 py-1 rounded bg-white/[0.03] border border-white/5 text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all group"
+          >
+            <span>Saud Panhwar</span>
+            <LogIn size={10} className="rotate-[-45deg] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
         </div>
       </footer>
     </div>
